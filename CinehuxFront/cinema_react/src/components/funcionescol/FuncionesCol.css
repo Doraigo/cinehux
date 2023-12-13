@@ -1,0 +1,66 @@
+/* FuncionesCol.css */
+
+.col-Funciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  justify-content: center; /* Centrar las tarjetas horizontalmente */
+  align-items: center; /* Centrar las tarjetas verticalmente */
+  margin-top: 240px; /* Agregar margen superior para espacio */
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.tarjeta:hover {
+  transform: scale(1.05);
+}
+
+.tarjeta img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
+}
+
+.info-tarjeta {
+  padding: 16px;
+}
+
+.info-tarjeta h3 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.info-tarjeta p {
+  margin: 0;
+  color: #666;
+}
+
+.button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.sinopsis {
+  padding: 16px;
+  background-color: #f9f9f9;
+}

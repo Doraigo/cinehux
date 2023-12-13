@@ -1,0 +1,44 @@
+/* Nosotros.css */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.nosotros-container {
+  max-width: 800px;
+  margin: 250px auto; /* Added space at the top */
+  padding: 20px;
+  text-align: justify;
+  background-color: #fdeff0; /* Light pastel color to complement pink */
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #333;
+  text-align: center;
+  font-size: 2.5em;
+  margin-bottom: 20px;
+}
+
+p {
+  margin-bottom: 20px;
+  line-height: 1.5;
+  color: #555;
+}
+
+/* Add animation to make it more alive */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.nosotros-container h2,
+.nosotros-container p {
+  animation: fadeIn 1s ease-in-out;
+}
