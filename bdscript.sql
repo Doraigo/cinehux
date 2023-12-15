@@ -4,11 +4,11 @@ DROP DATABASE cinehux;
 USE cinehux;
 
 SHOW TABLES;
-
+SELECT * FROM cliente;
 --
 -- Table structure for table `Sucursal`
 --
-Select	* from Proyeccion;
+Select	* from Asiento;
 DROP TABLE IF EXISTS `Sucursal`;
 CREATE TABLE `Sucursal` (
   `id_sucursal` int(11) AUTO_INCREMENT NOT NULL,
@@ -183,7 +183,7 @@ CREATE TABLE `Asiento` (
 --
 UPDATE Asiento
 SET ocupado = TRUE
-WHERE sala_id = 1 AND nombre_asiento = 'E10';
+WHERE sala_id = 1 AND nombre_asiento = 'A1';
 
 LOCK TABLES `Asiento` WRITE;
 INSERT INTO `Asiento` (`nombre_asiento`, `ocupado`, `sala_id`) VALUES

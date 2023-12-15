@@ -7,7 +7,6 @@ import db
 app = Flask(__name__)
 CORS(app, origins='*')
 
-
 @app.route('/')
 def index():
     return 'Hello world'
@@ -68,6 +67,8 @@ def registrar_usuario():
 
 @app.route('/comprar_boleto', methods=['POST'])
 def comprar_boleto():
+    print("debug:")
+    print(request.form)
     cliente_correo = request.form.get('correo')
     cliente_numero_tarjeta = request.form.get('numero_tarjeta')
     nombre_asiento = request.form.get('asiento')
@@ -88,30 +89,39 @@ def comprar_boleto():
     db.cursor.execute("SELECT a.id_asiento FROM Asiento a JOIN Sala s ON a.sala_id = s.id_sala WHERE a.nombre_asiento = %s AND s.sucursal_id = 1",
                       (nombre_asiento,))
     asiento_id = db.cursor.fetchone()
+    # Print the value of asiento_id
+    print("asiento_id:", asiento_id)
 
-    if not asiento_id:
-        return jsonify({'message': 'Asiento no encontrado'}), 404
-
+    # Verificar si el ID del asiento se recuperó correctamente
+    if asiento_id is not None and asiento_id and asiento_id['id_asiento']:
     # Verificar si el asiento está ocupado
-    db.cursor.execute("SELECT ocupado FROM Asiento WHERE id_asiento = %s", (asiento_id[0],))
-    asiento_ocupado = db.cursor.fetchone()
+        db.cursor.execute("SELECT ocupado FROM Asiento WHERE id_asiento = %s", (asiento_id[0],))
+        asiento_ocupado_result = db.cursor.fetchone()
 
-    if not asiento_ocupado:
-        return jsonify({'message': 'Asiento no encontrado'}), 404
+    # Verificar si se obtuvo el resultado y el valor de 'ocupado'
+        if not asiento_ocupado_result or not asiento_ocupado_result[0]:
+            return jsonify({'message': 'Asiento no encontrado'}), 404
 
-    if asiento_ocupado[0]:
-        return jsonify({'message': 'El asiento está ocupado'}), 400
+        asiento_ocupado = asiento_ocupado_result[0]
 
-    # Insertar el nuevo boleto en la tabla 'Boleto' sin incluir el campo 'precio' o 'proyeccion_id'
-    db.cursor.execute("INSERT INTO Boleto (asiento_id, cliente_id) VALUES (%s, %s)",
-                      (asiento_id[0], cliente_id[0]))
-    db.connection.commit()
+        if asiento_ocupado:
+            return jsonify({'message': 'El asiento está ocupado'}), 400
 
     # Actualizar el estado del asiento a ocupado
-    db.cursor.execute("UPDATE Asiento SET ocupado = TRUE WHERE id_asiento = %s", (asiento_id[0],))
-    db.connection.commit()
+        db.cursor.execute("UPDATE Asiento SET ocupado = TRUE WHERE id_asiento = %s", (asiento_id[0],))
+        db.connection.commit()
 
-    return jsonify({'message': 'Boleto comprado exitosamente'}), 201
+    # Insertar el nuevo boleto en la tabla 'Boleto' sin incluir el campo 'precio' o 'proyeccion_id'
+        db.cursor.execute("INSERT INTO Boleto (asiento_id, cliente_id) VALUES (%s, %s)",
+                      (asiento_id[0], cliente_id[0]))
+        db.connection.commit()
+
+        return jsonify({'message': 'Boleto comprado exitosamente'}), 201
+    else:
+        return jsonify({'message': 'Asiento no encontrado'}), 404
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
